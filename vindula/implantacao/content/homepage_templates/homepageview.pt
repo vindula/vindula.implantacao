@@ -1,0 +1,196 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.themedefault">
+<body>
+<tal:comment tal:condition="nothing">
+    This is a sample view template. It will not be used for rendering the
+    content unless activated by creation of a view class with a matching name.
+    
+    Note that we're using Plone 4 macros. Replace them with Plone 3 macros
+    if needed.
+</tal:comment>
+
+<metal:main fill-slot="content-core">
+ 	<metal:content-core define-macro="content-core">
+ 		<div id="vindula-home-page" tal:define="breadcrumbs context/disable_breadcrumbs|python:False" 
+ 		                            tal:attributes="class python: breadcrumbs and 'disable_breadcrumbs'">
+		
+			<!-- start: NEWS -->
+			<div class="boxTipo1">
+				<div class="topoBoxTipo">
+					<img src="/++theme++vindula.themedefault/images/bkgs/topoBoxTipo1.png" />
+				</div>
+				<div class="contBoxTipo1">	
+				
+					<!-- Content Top -->
+					<div tal:content="structure context/content_top|nothing">Text</div>
+					
+					<!-- START: Highlight News Cycle-->
+					<div class="contBoxDestaque" tal:define="highlighted_news view/getHighlightedNews" tal:condition="highlighted_news">
+						<div class="cont_superior">
+	
+							<div class="titulo marginDif1">
+								<h2 tal:content="context/title_highlightednews">Title Highlighted News</h2>
+							</div>
+							
+							<!-- Cycle Controls -->
+							<div class="opcoes_destaque marginDif1 gallery-cycle-controls" 
+								 tal:condition="python: len(highlighted_news) > 1">
+								<div class="float-right">
+									<div id="cycle-prev" class="circle float-left c-pointer">
+										<img class="left" src="/++theme++vindula.themedefault/images/buttons/seta_left.png" title="Anterior"/>
+									</div>
+									<tal:cond condition="python: view.context.getType_navigation() == 'image'">
+										<div id="cycle-nav"></div>
+									</tal:cond>
+									<tal:cond condition="python: view.context.getType_navigation() == 'number'">
+										<div class="pag_number paginacao cycle-nav-banner">
+											<p class="cycle-nav" id="cycle-nav"></p>
+											<p tal:content="python: '/' + str(len(highlighted_news))"></p>
+										</div>
+									</tal:cond>
+									<div id="cycle-next" class="circle float-left c-pointer">
+										<img class="right" src="/++theme++vindula.themedefault/images/buttons/seta_right.png" title="Anterior"/>
+									</div>
+								</div>
+							</div>
+							<div class="visualClear"></div>
+						</div>
+						
+						<!-- Cycle News -->
+						<div class="gallery-cycle">
+							
+							<tal:highlight-news repeat="new highlighted_news">
+
+								<div class="info zindex-min"> 
+									<input id="cycle-timeout" type="hidden" tal:attributes="value context/time_transitionsnews">
+									<div class="titulo_info">
+										<h2>
+											<a tal:content="new/title|nothing" tal:attributes="href new/link|nothing; alt new/title|nothing">New title</a>
+										</h2>
+									</div>
+									<div class="img_descricao">
+										<div class="img_info" tal:condition="new/image|nothing">
+											<img tal:attributes="src new/image|nothing" />
+										</div>
+										<div class="descricao_destaque">
+											<!--tal:def define="pas_member context/@@pas_member|nothing;
+															item_creator new/Creator|nothing;
+															author python:pas_member.info(item_creator) or None;">
+												
+												<h4 tal:content="author/name_or_id|nothing">Author</h4>
+											</tal:def-->
+											
+											<h4 tal:content="new/date|nothing">Date</h4>
+											<p tal:content="new/summary|nothing">Summary</p>
+											<a class="leia-mais" title="Ver a not&iacute;cia completa"
+											   tal:attributes="href new/link|nothing; alt new/title|nothing">leia mais</a>
+										</div>
+										<div class="visualClear"></div>
+									</div>
+								</div>	
+							
+							</tal:highlight-news>
+							
+						</div>						
+					</div>
+					<!-- END: Highlight News Cycle -->
+								 
+					<!-- Content Middle Top -->
+					<div tal:content="structure context/content_middle_top|nothing">Text</div>
+										
+					<!-- START: Other News -->
+					<div class="contBoxDestaque" tal:define="other_news view/getOtherNews" tal:condition="other_news">
+						<div class="cont_superior">
+							
+							<div class="titulo marginDif">
+								<h2 tal:content="context/title_othernews">Title Others News</h2>
+							</div>
+							
+							<div class="opcoes_destaque marginDif" tal:condition="other_news/url">
+								<a class="leia-mais" title="Ver todas as not&iacute;cias" 
+								   tal:attributes="href other_news/url">todas as not&iacute;cias</a>
+							</div>
+							<div class="visualClear"></div>
+						</div>
+
+						<tal:other-news repeat="new other_news/news">
+							
+							<tal:line condition="repeat/new/end"><tal:false define="global line string:info"/></tal:line>
+							<tal:line condition="not: repeat/new/end"><tal:true define="global line string:info borderDif"/></tal:line>
+							
+							<div tal:attributes="class line"> 
+								<div class="titulo_info">
+									<h4>
+										<a tal:content="new/title" tal:attributes="href new/link; alt new/title">New title</a>
+									</h4>
+								</div>
+								<div class="img_descricao">
+									<div class="descricao_destaque">
+										<!--tal:def define="pas_member context/@@pas_member|nothing;
+															item_creator new/Creator|nothing;
+															author python:pas_member.info(item_creator) or None;">
+												
+												<h4 tal:content="author/name_or_id|nothing">Author</h4>
+										</tal:def-->
+										<h4 tal:content="new/date">Date</h4>
+										<p tal:content="new/summary">Summary</p>
+									</div>
+									<div class="visualClear"></div>
+								</div>
+							</div>	
+							
+						</tal:other-news>						
+					</div>
+					<!-- END: Other News -->
+					
+					<!-- Content Middle Bottom -->
+					<div tal:content="structure context/content_middle_bottom|nothing">Text</div>
+					
+					<!-- START: Media News -->
+					<div class="contBoxDestaque" tal:define="media_news view/getMediaNews" tal:condition="media_news">
+						<div class="cont_superior">
+							<div class="titulo marginDif">
+								<h2 tal:content="context/title_medianews">Title Media News</h2>
+							</div>
+							<div class="visualClear"></div>
+						</div>
+						
+						<tal:media-news repeat="new media_news">
+							
+							<tal:line condition="repeat/new/end"><tal:false define="global line string:info"/></tal:line>
+							<tal:line condition="not: repeat/new/end"><tal:true define="global line string:info borderDif"/></tal:line>
+							
+							<div tal:attributes="class line"> 
+								<div class="titulo_info">
+									<h4>
+										<a tal:content="new/title" tal:attributes="href new/link; alt new/title">New title</a>
+									</h4>
+								</div>
+							</div>	
+							
+						</tal:media-news>								
+					</div>
+					<!-- END: Media News -->
+					
+					<!-- Content Bottom -->
+					<div tal:content="structure context/content_bottom|nothing">Text</div>
+					
+				</div>
+				<div class="bottomBoxTipo">
+					<img src="/++theme++vindula.themedefault/images/bkgs/bottomBoxTipo1.png" />
+				</div>
+			</div>
+			<!-- end: NEWS -->
+	
+		</div>
+	</metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

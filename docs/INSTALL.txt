@@ -1,0 +1,17 @@
+vindula.implantacao Installation
+--------------------------------
+
+To install vindula.implantacao using zc.buildout and the plone.recipe.zope2instance
+recipe to manage your project, you can do this:
+
+* Add ``vindula.implantacao`` to the list of eggs to install, e.g.:
+
+    [buildout]
+    ...
+    eggs =
+        ...
+        vindula.implantacao
+       
+* Re-run buildout, e.g. with:
+
+    $ ./bin/buildout
